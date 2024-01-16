@@ -120,7 +120,7 @@ export const SettingPanel: React.FC<React.PropsWithChildren<IToolBarBase>> = (pr
             {IS_ENTERPRISE && <SubscribeLabel grade={SubscribeGrade.Gold} />}
           </>
         ),
-        disabled: !controlFormBrandLogo,
+        disabled: false,
         show: !embedId,
       },
     ];
