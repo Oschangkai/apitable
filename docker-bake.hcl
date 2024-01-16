@@ -2,8 +2,12 @@ group "default" {
   targets = ["backend-server", "room-server", "web-server", "init-db", "openresty"]
 }
 
+variable "IMAGE_PREFIX" {
+  default = ""
+}
+
 variable "IMAGE_REGISTRY" {
-  default = "docker.io"
+  default = "ghcr.io${IMAGE_PREFIX}"
 }
 
 variable "SEMVER_FULL" {
