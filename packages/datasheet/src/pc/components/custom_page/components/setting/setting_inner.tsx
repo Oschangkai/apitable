@@ -9,8 +9,8 @@ import { useCatalogTreeRequest } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { getConfig } from '../../config/config';
-import { embedPageAtom } from '../../store/embed_page_desc_atom';
-import { convertFigmaUrl, convertYoutubeUrl } from '../../utils/convert-url';
+import { CustomPageAtom } from '../../store/custon_page_desc_atom';
+import { convertBilibiliUrl, convertFigmaUrl, convertYoutubeUrl } from '../../utils/convert-url';
 
 function isValidUrl(url: string) {
   try {
@@ -52,9 +52,9 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
   const colors = useThemeColors();
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const activeConfig = getConfig()[activeTabIndex];
-  const { embedPageId } = useAppSelector((state) => state.pageParams);
+  const { customPageId } = useAppSelector((state) => state.pageParams);
 
-  const [embedPage, setEmbedPage] = useAtom(embedPageAtom);
+  const [embedPage, setEmbedPage] = useAtom(CustomPageAtom);
   const { updateNodeReq } = useCatalogTreeRequest();
   const dispatch = useDispatch();
 
@@ -67,7 +67,7 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
 
   const onSubmit = async ({ url }) => {
     try {
-      const data = await updateNodeReq(embedPageId!, {
+      const data = await updateNodeReq(customPageId!, {
         embedPage: {
           url,
         },
@@ -76,7 +76,7 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
         ...pre,
         url: data?.extra ? JSON.parse(data?.extra).embedPage.url : '',
       }));
-      dispatch(StoreActions.updateTreeNodesMap(embedPageId!, { extra: JSON.stringify({ embedPage: { url } }) }));
+      dispatch(StoreActions.updateTreeNodesMap(customPageId!, { extra: JSON.stringify({ embedPage: { url } }) }));
       Message.success({
         content: t(Strings.embed_success),
       });
@@ -117,15 +117,27 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
       return;
     }
 
-    if (pastedData.includes('youtube') && activeConfig.name === t(Strings.embed_link_youtube)) {
+    if (
+      pastedData.includes('youtube') &&
+      (activeConfig.name === t(Strings.embed_link_youtube) || activeConfig.name === t(Strings.embed_link_default))
+    ) {
       document.execCommand('insertText', false, convertYoutubeUrl(pastedData));
       return;
     }
 
-    if (pastedData.includes('figma') && activeConfig.name === t(Strings.embed_link_figma)) {
+    if (pastedData.includes('figma') && (activeConfig.name === t(Strings.embed_link_figma) || activeConfig.name === t(Strings.embed_link_default))) {
       document.execCommand('insertText', false, convertFigmaUrl(pastedData));
       return;
     }
+
+    if (
+      pastedData.includes('bilibili') &&
+      (activeConfig.name === t(Strings.embed_link_bilibili) || activeConfig.name === t(Strings.embed_link_default))
+    ) {
+      document.execCommand('insertText', false, convertBilibiliUrl(pastedData));
+      return;
+    }
+
     document.execCommand('insertText', false, pastedData);
   };
 
@@ -156,7 +168,7 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
       </div>
       <Typography variant="body4" color={colors.textCommonTertiary} className={'!vk-mt-2'}>
         {activeConfig.desc}
-        <LinkButton href={activeConfig.linkUrl} className={'!vk-text-[12px] [&>span]:vk-text-[12px] !vk-inline'}>
+        <LinkButton href={activeConfig.linkUrl} className={'!vk-text-[12px] [&>span]:vk-text-[12px] !vk-inline'} target={'_blank'} rel="noreferrer">
           {activeConfig.linkText}
         </LinkButton>
       </Typography>

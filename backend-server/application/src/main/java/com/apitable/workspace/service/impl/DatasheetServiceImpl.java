@@ -898,7 +898,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         Map<Long, List<Long>> roleUnitIdToRoleMemberUnitIds = getRoleMemberUnits(units);
         // self don't need to send notifications, filter
         Long memberId =
-            userId == null ? -2L : iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
+            null == userId ? null : iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
         // Gets the organizational unit of the member type, the corresponding member.
         Map<Long, Long> unitIdToMemberIdMap = units.stream()
             .filter(unit -> unit.getUnitType().equals(UnitType.MEMBER.getType())
@@ -982,7 +982,9 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             // send notification
             NotificationCreateRo notifyRo = new NotificationCreateRo();
             notifyRo.setToMemberId(ListUtil.toList(Convert.toStrArray(toMemberIds)));
-            notifyRo.setFromUserId(userId == null ? "-2" : userId.toString());
+            if (null != userId) {
+                notifyRo.setFromUserId(userId.toString());
+            }
             notifyRo.setNodeId(ro.getNodeId());
             notifyRo.setSpaceId(spaceId);
             // used to mark message jump read

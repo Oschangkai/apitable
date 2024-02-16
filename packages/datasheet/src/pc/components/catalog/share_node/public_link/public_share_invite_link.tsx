@@ -46,7 +46,6 @@ import { ShareQrCode } from '../share_qr_code';
 import { WidgetEmbed } from 'enterprise/chat/widget_embed';
 import styles from './style.module.less';
 
-
 export interface IPublicShareLinkProps {
   nodeId: string;
 }
@@ -232,8 +231,6 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
       },
     ];
   }
-  console.log('automationId', automationId);
-  console.log('Permission', Permission);
 
   let value = '';
   if (shareSettings) {
@@ -297,10 +294,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
 
   if (!spaceFeatures?.fileSharable) {
     return (
-      <>
-        {renderShareSwitchButton()}
-        <DisabledShareFile style={{ marginBottom: 16 }} />
-      </>
+      <DisabledShareFile style={{ marginBottom: 16 }} />
     );
   }
 
@@ -321,7 +315,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
       </div>
     );
   }
-
+  
   return (
     <div className={styles.publish}>
       {renderShareSwitchButton()}
