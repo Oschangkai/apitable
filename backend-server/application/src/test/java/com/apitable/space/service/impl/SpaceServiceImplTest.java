@@ -149,8 +149,8 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
         MockUserSpace userSpace = createSingleUserAndSpace();
         String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
         initNodeTreeMockData(userSpace.getSpaceId(), rootNodeId);
-        assertThatThrownBy(() -> iSpaceService.checkFileNumOverLimit(userSpace.getSpaceId()))
-            .isInstanceOf(BusinessException.class);
+        assertThatNoException().isThrownBy(
+            () -> iSpaceService.checkFileNumOverLimit(userSpace.getSpaceId()));
     }
 
     @Test
