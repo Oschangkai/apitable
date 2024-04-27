@@ -24,6 +24,7 @@ import com.apitable.asset.service.IAssetService;
 import com.apitable.asset.service.IAssetUploadTokenService;
 import com.apitable.asset.task.AssetTask;
 import com.apitable.auth.service.IAuthService;
+import com.apitable.automation.service.IAutomationActionService;
 import com.apitable.automation.service.IAutomationRobotService;
 import com.apitable.automation.service.IAutomationTriggerService;
 import com.apitable.automation.service.IAutomationTriggerTypeService;
@@ -71,6 +72,7 @@ import com.apitable.user.entity.UserEntity;
 import com.apitable.user.service.IUserService;
 import com.apitable.user.task.UserTasks;
 import com.apitable.widget.service.IWidgetPackageService;
+import com.apitable.widget.service.IWidgetService;
 import com.apitable.widget.service.IWidgetUploadService;
 import com.apitable.workspace.dto.CreateNodeDto;
 import com.apitable.workspace.entity.NodeEntity;
@@ -78,8 +80,10 @@ import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.service.IDatasheetMetaService;
 import com.apitable.workspace.service.IFieldRoleService;
 import com.apitable.workspace.service.INodeRoleService;
+import com.apitable.workspace.service.INodeRubbishService;
 import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.service.IResourceMetaService;
+import com.apitable.workspace.service.NodeBundleService;
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import java.util.Collections;
@@ -156,6 +160,9 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     protected INodeService iNodeService;
 
     @Autowired
+    protected INodeRubbishService iNodeRubbishService;
+
+    @Autowired
     protected PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -225,6 +232,9 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     protected IWidgetPackageService iWidgetPackageService;
 
     @Autowired
+    protected IWidgetService iWidgetService;
+
+    @Autowired
     protected IFieldRoleService iFieldRoleService;
 
     @Autowired
@@ -253,6 +263,12 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @Autowired
     protected IAutomationTriggerTypeService iAutomationTriggerTypeService;
+
+    @Autowired
+    protected IAutomationActionService iAutomationActionService;
+
+    @Autowired
+    protected NodeBundleService nodeBundleService;
 
     @Value("#{'${exclude}'.split(',')}")
     private List<String> excludeTables;

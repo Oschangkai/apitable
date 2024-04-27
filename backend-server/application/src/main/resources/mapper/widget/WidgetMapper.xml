@@ -47,11 +47,12 @@
     <select id="selectInfoBySpaceIdAndNodeType"
             resultType="com.apitable.widget.vo.WidgetInfo">
         SELECT vw.widget_id,
-               vw.name      AS widgetName,
-               vwp.cover    AS widgetPackageCover,
-               vwp.icon     AS widgetPackageIcon,
-               vdw.dst_id   AS datasheetId,
-               vn.node_name AS datasheetName
+        vw.name AS widgetName,
+        vwp.cover AS widgetPackageCover,
+        vwp.icon AS widgetPackageIcon,
+        vdw.dst_id AS datasheetId,
+        vn.node_name AS datasheetName,
+        IF(vn.unit_id = 0, 0, 1) node_private
         FROM ${tablePrefix}widget vw
                      JOIN ${tablePrefix}widget_package vwp
                 ON vw.package_id = vwp.package_id
@@ -177,6 +178,16 @@
         WHERE w.space_id = #{spaceId}
         AND w.is_deleted = 0
         AND n.is_rubbish = 0
+    </select>
+
+    <select id="selectNodeIdsByWidgetIds" resultType="java.lang.String">
+        SELECT DISTINCT node_id
+        FROM ${tablePrefix}widget
+        WHERE widget_id IN
+        <foreach item="item" index="index" collection="widgetIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
     </select>
 
 </mapper>

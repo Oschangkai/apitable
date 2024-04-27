@@ -20,11 +20,13 @@ package com.apitable.space.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import cn.hutool.json.JSONUtil;
 import com.apitable.AbstractMyBatisMapperTest;
 import com.apitable.space.dto.NodeStaticsDTO;
 import com.apitable.space.dto.NodeTypeStaticsDTO;
 import com.apitable.workspace.mapper.DatasheetMapper;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,8 +69,8 @@ public class StaticsMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql({"/sql/datasheet-meta-data.sql", "/sql/datasheet-data.sql"})
     void testCountRecordsBySpaceId() {
-        Long count = staticsMapper.countRecordsBySpaceId("spc41");
-        assertThat(count).isEqualTo(3);
+        List<String> count = staticsMapper.countRecordsBySpaceId("spc41");
+        assertThat(3).isEqualTo(JSONUtil.parseArray(count.get(0)).size());
     }
 
     @Test
@@ -125,7 +127,8 @@ public class StaticsMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql({"/sql/datasheet-meta-data.sql", "/sql/datasheet-data.sql"})
     void testSelectDstViewStaticsBySpaceId() {
-        List<String> entities = staticsMapper.selectDstViewStaticsBySpaceId("spc41");
+        List<String> entities =
+            staticsMapper.selectDstViewStaticsByDstIds(Collections.singletonList("ni41"));
         assertThat(entities).isNotEmpty();
     }
 

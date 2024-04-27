@@ -213,6 +213,8 @@ public class TemplateServiceImpl
                 iAutomationRobotService.checkAutomationReference(singletonNodeIds,
                     singletonNodeIds);
                 break;
+            case CUSTOM_PAGE:
+                break;
             default:
                 throw new BusinessException(NOT_ALLOW);
         }
@@ -748,11 +750,14 @@ public class TemplateServiceImpl
      */
     @Override
     public String getDefaultTemplateNodeId() {
-        if (Locale.US.equals(LocaleContextHolder.getLocale())) {
-            String quoteEnTemplateId = constProperties.getQuoteEnTemplateId();
-            return baseMapper.selectNodeIdByTempId(quoteEnTemplateId);
-        }
         String quoteTemplateId = constProperties.getQuoteTemplateId();
+        try {
+            if (Locale.US.equals(LocaleContextHolder.getLocale())) {
+                quoteTemplateId = constProperties.getQuoteEnTemplateId();
+            }
+        } catch (Exception e) {
+            log.error("Get default en template id error", e);
+        }
         return baseMapper.selectNodeIdByTempId(quoteTemplateId);
     }
 
