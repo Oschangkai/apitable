@@ -139,6 +139,7 @@
   },
   "dependencies": {
     "glob-parent": "5.1.2",
+    "mysql2": "^2.3.3",
     "react": "18.2.0"
   }
 }
