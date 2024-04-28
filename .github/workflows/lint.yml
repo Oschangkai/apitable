@@ -12,10 +12,10 @@ name: Lint
 
 on:
   push:
-    branches: [ "develop", "release/v*" ]
-  pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ "develop" ]
+    branches: [ "release/v*" ]
+#  pull_request:
+#    # The branches below must be a subset of the branches above
+#    branches: [ "develop" ]
 
 jobs:
   eslint:

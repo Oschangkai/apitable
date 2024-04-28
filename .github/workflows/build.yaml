@@ -3,7 +3,7 @@ name: build
 on:
   push:
     branches:
-      - 'develop'
+#      - 'develop'
       - 'release/**'
     paths-ignore:
       - '**.md'
